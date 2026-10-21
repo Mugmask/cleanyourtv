@@ -19,8 +19,10 @@ Cambios hechos el 2026-10-21 sobre el repo original
   - Tarjeta "reproduciendo" sobre el dock (`NowPlaying`): tapa, tema, artista y ⏮ ⏯ ⏭ de Spotify
     (`music_app` en `config.xml`). Arriba desde el dock entra a la tarjeta; arriba otra vez, a la barra.
     Esta TV es low-RAM y Android no deja habilitar `MediaListener` (lee todas las sesiones): la tarjeta se
-    conecta al `MediaBrowserService` de Spotify, que deja usar el control a cualquier app. Con Spotify
-    cerrado, Play lo abre; si estaba en pausa, Spotify se pone al frente y Home vuelve solo a los ~4 s.
+    conecta al `MediaBrowserService` de Spotify, que deja usar el control a cualquier app.
+    Play desde pausa arranca sin salir de Home. Desde detenido o cerrado, Spotify se pone al frente solo
+    (y su pantalla de inicio corta la música con un preview): la tarjeta manda la tecla de play del sistema,
+    la repite si se corta y trae Home de vuelta cuando lleva 4 s sonando seguido (~15 s en frío).
 - **Tema** `theme/`: foto "Lofoten, Norway" (CC0, ver `theme/CREDITS.txt`), biblioteca de apps activada.
 - **Dock:** YouTube, Netflix, Max, Spotify (`launcher/app/src/main/res/values/config.xml`).
 
