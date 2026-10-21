@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- NowPlaying: artwork, what is playing and previous / play-pause / next, above the dock. -->
+<!-- NowPlaying: artwork, what is playing and previous / play-pause / next, above the dock.
+     A fixed width, so the card keeps its size from track to track; long names are cut with an ellipsis. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/nowPlaying"
-    android:layout_width="wrap_content"
+    android:layout_width="430dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="58dp"
     android:orientation="horizontal"
@@ -19,7 +20,8 @@
         android:importantForAccessibility="no" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="8dp"
@@ -27,7 +29,7 @@
 
         <TextView
             android:id="@+id/npApp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#99FFFFFF"
             android:textSize="13sp"
@@ -36,9 +38,8 @@
 
         <TextView
             android:id="@+id/npTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxWidth="380dp"
             android:layout_marginTop="2dp"
             android:textColor="#FFFFFFFF"
             android:textSize="22sp"
@@ -48,9 +49,8 @@
 
         <TextView
             android:id="@+id/npArtist"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxWidth="380dp"
             android:textColor="#B3FFFFFF"
             android:textSize="16sp"
             android:fontFamily="@font/inter_regular"

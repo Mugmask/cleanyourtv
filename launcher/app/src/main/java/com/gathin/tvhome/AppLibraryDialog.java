@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -289,6 +290,21 @@ final class AppLibraryDialog {
         });
     }
 
+    /** Jumps the carousel to this end and focuses its card once it is laid out there. */
+    private boolean wrapTo(int index, View from) {
+        RecyclerView list = catalog;
+        if (list == null) return true;
+        list.scrollToPosition(index);
+        list.post(() -> {
+            if (catalog != list || !popup.isShowing()) return;
+            RecyclerView.ViewHolder holder = list.findViewHolderForAdapterPosition(index);
+            if (holder != null) holder.itemView.requestFocus();
+        });
+        from.playSoundEffect(index == 0 ? SoundEffectConstants.NAVIGATION_RIGHT
+                : SoundEffectConstants.NAVIGATION_LEFT);
+        return true;
+    }
+
     private void dismissActions() {
         PopupWindow menu = actionPopup;
         actionPopup = null;
@@ -507,11 +523,14 @@ final class AppLibraryDialog {
                 }
             });
             holder.itemView.setOnKeyListener((v, key, event) -> {
+                if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
+                if (key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_DOWN) return true;
                 int index = holder.getBindingAdapterPosition();
-                return event.getAction() == KeyEvent.ACTION_DOWN && (key == KeyEvent.KEYCODE_DPAD_UP
-                        || key == KeyEvent.KEYCODE_DPAD_DOWN
-                        || (rtl ? key == KeyEvent.KEYCODE_DPAD_RIGHT : key == KeyEvent.KEYCODE_DPAD_LEFT) && index == 0
-                        || (rtl ? key == KeyEvent.KEYCODE_DPAD_LEFT : key == KeyEvent.KEYCODE_DPAD_RIGHT) && index == apps.size() - 1);
+                boolean back = rtl ? key == KeyEvent.KEYCODE_DPAD_RIGHT : key == KeyEvent.KEYCODE_DPAD_LEFT;
+                boolean forward = rtl ? key == KeyEvent.KEYCODE_DPAD_LEFT : key == KeyEvent.KEYCODE_DPAD_RIGHT;
+                if (apps.size() > 1 && back && index == 0) return wrapTo(apps.size() - 1, v);
+                if (apps.size() > 1 && forward && index == apps.size() - 1) return wrapTo(0, v);
+                return false;
             });
         }
         @Override public int getItemCount() { return apps.size(); }

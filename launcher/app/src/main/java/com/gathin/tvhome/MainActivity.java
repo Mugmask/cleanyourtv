@@ -447,12 +447,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
         });
         if (dockRow) {
-            DockDecoration dock = new DockDecoration(COLUMNS, density, cinematic, cfg.alwaysShowNames);
-            grid.addItemDecoration(dock);
-            wallpaperPlayer.setBackdropListener(frosted -> {
-                dock.setBackdrop(frosted);
-                grid.invalidate();
-            });
+            grid.addItemDecoration(new DockDecoration(COLUMNS, density, cfg.alwaysShowNames));
         }
         if (animations) {
             int enterAnim = reducedMotion ? R.anim.tile_enter_reduced : R.anim.tile_enter;
@@ -1812,7 +1807,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         } else {
             int lastRowStart = ((count - 1) / COLUMNS) * COLUMNS;
             if (position >= lastRowStart) {
+                // Without the library button below, the grid goes round: back to this column in the first row.
                 if (adapter.isLibraryAt(count)) focusLibrary();
+                else if (lastRowStart > 0) {
+                    focusTile(position % COLUMNS);
+                    grid.playSoundEffect(SoundEffectConstants.NAVIGATION_DOWN);
+                }
                 return true;
             }
             target = Math.min(position + COLUMNS, count - 1);
@@ -1836,6 +1836,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (btnWifi.getVisibility() == View.VISIBLE) return btnWifi;
         if (btnReorder.getVisibility() == View.VISIBLE) return btnReorder;
         return findViewById(R.id.btnSettings);
+    }
+
+    @Override public void onLibraryDown() {
+        if (adapter.appCount() == 0) return;
+        focusTile(lastFocused % COLUMNS);
+        grid.playSoundEffect(SoundEffectConstants.NAVIGATION_DOWN);
     }
 
     @Override public void onLibraryUp() {

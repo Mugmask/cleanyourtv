@@ -505,7 +505,7 @@ final class NowPlaying {
             if (TextUtils.isEmpty(by)) by = m.getText(MediaMetadata.METADATA_KEY_ALBUM_ARTIST);
             title.setText(trackTitle);
             artist.setText(by);
-            artist.setVisibility(TextUtils.isEmpty(by) ? View.GONE : View.VISIBLE);
+            artist.setVisibility(TextUtils.isEmpty(by) ? View.INVISIBLE : View.VISIBLE);
             appName.setText(appLabel(controller.getPackageName()));
             Bitmap picture = m.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
             if (picture == null) picture = m.getBitmap(MediaMetadata.METADATA_KEY_ART);
@@ -517,7 +517,7 @@ final class NowPlaying {
             // Nothing playing: offer the music app, Play resumes it.
             appName.setText(appLabel(musicApp));
             title.setText(R.string.now_playing_idle);
-            artist.setVisibility(View.GONE);
+            artist.setVisibility(View.INVISIBLE);
             art.setImageDrawable(appIcon(musicApp));
             available = true;
         } else {

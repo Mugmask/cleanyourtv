@@ -57,6 +57,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onLibraryRequested();
         void onLibraryFocused();
         void onLibraryUp();
+        /** Down from the library button, the grid's last stop: Home goes round to the first row. */
+        void onLibraryDown();
     }
 
     static final class Entry {
@@ -361,6 +363,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             button.setOnKeyListener((v, key, event) -> {
                 if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
                 if (key == KeyEvent.KEYCODE_DPAD_UP) listener.onLibraryUp();
+                if (key == KeyEvent.KEYCODE_DPAD_DOWN) listener.onLibraryDown();
                 return key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_DOWN
                         || key == KeyEvent.KEYCODE_DPAD_LEFT || key == KeyEvent.KEYCODE_DPAD_RIGHT;
             });
