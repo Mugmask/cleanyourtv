@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Weather: a picture of the sky, the temperature now, the sky in words and today's low / high, and the feel,
+     wind and humidity, beside the now-playing card above the dock. Same glass as that card, tinted in code by the
+     weather (Weather.tint); starts where it ends (58dp + 430dp + 20dp) and reaches the dock's right edge. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/weatherCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="508dp"
+    android:layout_marginEnd="58dp"
+    android:minHeight="158dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/np_card_bg"
+    android:paddingStart="18dp"
+    android:paddingEnd="22dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/weatherIcon"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/weatherTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="50sp"
+            android:fontFamily="@font/inter_light"
+            android:includeFontPadding="false"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/weatherSky"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#FFFFFFFF"
+            android:textSize="17sp"
+            android:fontFamily="@font/inter_semibold"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/weatherRange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#B3FFFFFF"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_regular"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/weatherCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textColor="#99FFFFFF"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter_medium"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/weatherFeels"
+            style="@style/WeatherDetail" />
+
+        <TextView
+            android:id="@+id/weatherWind"
+            style="@style/WeatherDetail" />
+
+        <TextView
+            android:id="@+id/weatherHumidity"
+            style="@style/WeatherDetail" />
+    </LinearLayout>
+</LinearLayout>

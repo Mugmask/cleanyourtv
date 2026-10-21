@@ -106,6 +106,9 @@
     <!-- What is playing, above the dock (NowPlaying); positioned in code. -->
     <include layout="@layout/now_playing" />
 
+    <!-- The weather beside it (Weather, config.xml weather_card); positioned in code. -->
+    <include layout="@layout/weather_card" />
+
     <!-- Top shelf: the focused dock app's name, positioned above the dock in code. -->
     <LinearLayout
         android:id="@+id/hero"

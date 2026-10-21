@@ -113,6 +113,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private InputsMenu inputsMenu;
     /** The now-playing card above the dock. */
     private NowPlaying nowPlaying;
+    private Weather weather;
     /** Idle time on Home before ClockActivity; 0 is off (config.xml, home_idle_clock_minutes). */
     private long idleClockMs;
     private final Runnable showIdleClock = () -> startActivity(new Intent(this, ClockActivity.class));
@@ -341,6 +342,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (!ambientGlow) ambient.setVisibility(View.GONE);
         heroName = findViewById(R.id.heroName);
         hero = findViewById(R.id.hero);
+        weather = new Weather(this, findViewById(R.id.weatherCard));
         nowPlaying = new NowPlaying(this, findViewById(R.id.nowPlaying), getString(R.string.music_app),
                 new NowPlaying.Host() {
                     @Override public void focusTopBar() {
@@ -661,6 +663,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         updateClockVisibility();
         nowPlaying.start();
+        weather.start();
     }
 
     @Override
@@ -832,6 +835,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onStop() {
         super.onStop();
         nowPlaying.stop();
+        weather.stop();
         started = false;
         unregisterReceiver(packageReceiver);
         unregisterReceiver(timeReceiver);
@@ -876,6 +880,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onDestroy() {
         super.onDestroy();
         wallpaperPlayer.close();
+        weather.close();
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
         TvInputManager tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);
         if (tim != null) tim.unregisterCallback(inputCallback);
@@ -1266,8 +1271,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
             showHero(position, scroll ? r.top - dy : r.top);
             nowPlaying.showAbove(scroll ? r.top - dy : r.top);
+            weather.showAbove(scroll ? r.top - dy : r.top);
         } else {
             nowPlaying.hide();
+            weather.hide();
             // Below the dock (or in a plain grid) the glow follows the tile without the big name; letting it
             // fade out left the grid on plain black.
             showGlowOnly(position);
@@ -1827,6 +1834,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override public void onLibraryFocused() {
         libraryFocusPending = false;
         nowPlaying.hide();
+        weather.hide();
         hideGlass();
         hideHero();
     }
