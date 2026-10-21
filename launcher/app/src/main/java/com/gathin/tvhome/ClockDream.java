@@ -3,7 +3,7 @@ package com.gathin.tvhome;
 import android.service.dreams.DreamService;
 
 /**
- * Screensaver: the theme's wallpaper slowly zooming, with the clock and date in the corner (ClockScene).
+ * Screensaver: the theme's wallpaper with the clock and date in the corner (ClockScene).
  * No network, one picture at screen size: cheap enough for a 1 GB TV.
  */
 public class ClockDream extends DreamService {

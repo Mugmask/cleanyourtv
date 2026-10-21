@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Screensaver (ClockDream): the theme's wallpaper, slowly zooming and panning, with a bold clock and the date
-     in the bottom right corner. Without a wallpaper, black under an ambient glow. -->
+<!-- Screensaver (ClockDream): the theme's wallpaper with a bold clock and the date in the bottom right
+     corner. Without a wallpaper, black under an ambient glow. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,14 +63,17 @@
                 android:textAllCaps="true" />
         </LinearLayout>
 
-        <TextClock
+        <!-- "Mié 21 Oct", set by ClockScene. The negative margin takes back the space Inter leaves under the
+             large digits (they have no descenders), so the date sits right under the clock. -->
+        <TextView
+            android:id="@+id/dreamDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:format12Hour="@string/date_format"
-            android:format24Hour="@string/date_format"
-            android:textColor="#B3FFFFFF"
-            android:textSize="24sp"
-            android:fontFamily="@font/inter_medium" />
+            android:layout_marginTop="-16dp"
+            android:layout_marginEnd="12dp"
+            android:textColor="#CCFFFFFF"
+            android:textSize="26sp"
+            android:fontFamily="@font/inter_medium"
+            android:includeFontPadding="false" />
     </LinearLayout>
 </FrameLayout>

@@ -1,25 +1,26 @@
 package com.gathin.tvhome;
 
 import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
- * The clock screensaver's scene (layout dream_clock): the theme's wallpaper slowly zooming and panning back and
- * forth, with the clock and date in the bottom right corner. Without a wallpaper, black under a slow ambient glow
+ * The clock screensaver's scene (layout dream_clock): the theme's wallpaper, still, with the clock and date in
+ * the bottom right corner. Without a wallpaper, black under a slow ambient glow
  * that shifts colour every minute. The clock glides a few pixels every minute, so nothing burns in while it stays
  * where you look for it.
  * Shared by ClockDream (the system screensaver) and ClockActivity (Home left idle).
@@ -31,8 +32,6 @@ final class ClockScene {
     private static final float NUDGE = 0.01f;
     /** The clock's distance from the bottom right corner, as a fraction of the screen. */
     private static final float MARGIN = 0.05f;
-    /** One way of the photo's slow zoom and pan; it then eases back. */
-    private static final long PHOTO_DRIFT_MS = 45_000L;
     /** Deep, low-brightness glow colours; the glow is drawn at partial alpha on black. */
     private static final int[] PALETTE = {0xFF2B5CFF, 0xFF00A39A, 0xFF8A3FFC, 0xFFE0661B, 0xFFD6336C};
 
@@ -44,12 +43,14 @@ final class ClockScene {
     private int glowColor;
     /** The wallpaper behind the clock, or null: then the ambient glow. */
     private final ImageView photo;
-    private ObjectAnimator photoDrift;
+    /** The date line, or null in layouts that keep a TextClock for it. */
+    private final TextView date;
 
     private final Runnable tick = new Runnable() {
         @Override
         public void run() {
             moveClock();
+            updateDate();
             if (photo == null) shiftGlow();
             handler.postDelayed(this, MOVE_MS);
         }
@@ -66,6 +67,8 @@ final class ClockScene {
                 glow.setGradientRadius((r - l) * 0.55f));
         colorIndex = random.nextInt(PALETTE.length);
         setGlow(PALETTE[colorIndex]);
+        date = root.findViewById(R.id.dreamDate);
+        updateDate();
         ImageView view = root.findViewById(R.id.dreamPhoto);
         Bitmap picture = view == null ? null : loadWallpaper(root);
         if (picture != null) {
@@ -77,6 +80,24 @@ final class ClockScene {
         } else {
             photo = null;
         }
+    }
+
+    /** "Mié 21 Oct": short day and month without the locale's dots, each word capitalised. */
+    private void updateDate() {
+        if (date != null) date.setText(shortDate(new Date(), Locale.getDefault()));
+    }
+
+    static String shortDate(Date when, Locale locale) {
+        String raw = new SimpleDateFormat("EEE d MMM", locale).format(when).replace(".", "");
+        StringBuilder out = new StringBuilder(raw.length());
+        boolean start = true;
+        for (int i = 0; i < raw.length(); ) {
+            int cp = raw.codePointAt(i);
+            out.appendCodePoint(start ? Character.toTitleCase(cp) : cp);
+            start = Character.isWhitespace(cp);
+            i += Character.charCount(cp);
+        }
+        return out.toString().trim();
     }
 
     /** The theme's first wallpaper, decoded near screen size in RGB_565 like Home's (about 4 MB at 1080p). */
@@ -110,24 +131,10 @@ final class ClockScene {
         });
         handler.removeCallbacks(tick);
         handler.postDelayed(tick, MOVE_MS);
-        if (photo != null) {
-            // Ken Burns: a slow zoom with a drift to one side, then back, for as long as the screensaver runs.
-            float pan = photo.getResources().getDisplayMetrics().widthPixels * 0.03f;
-            photoDrift = ObjectAnimator.ofPropertyValuesHolder(photo,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.04f, 1.14f),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.04f, 1.14f),
-                    PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pan, -pan));
-            photoDrift.setDuration(PHOTO_DRIFT_MS);
-            photoDrift.setInterpolator(new AccelerateDecelerateInterpolator());
-            photoDrift.setRepeatMode(ValueAnimator.REVERSE);
-            photoDrift.setRepeatCount(ValueAnimator.INFINITE);
-            photoDrift.start();
-        }
     }
 
     void stop() {
         handler.removeCallbacks(tick);
-        if (photoDrift != null) photoDrift.cancel();
     }
 
     /** A slow glide to the next spot, never a jump. */
