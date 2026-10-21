@@ -19,6 +19,10 @@
          set "fill_dock": false. -->
     <bool name="fill_dock">true</bool>
 
+    <!-- The music app the now-playing card offers when nothing is playing (NowPlaying). Empty: the card shows only
+         while some app has a media session. -->
+    <string name="music_app" translatable="false">com.spotify.tv.android</string>
+
     <!-- Apps never shown as tiles (e.g. the Live TV app, which the Inputs menu already covers). -->
     <string-array name="hidden_apps">
         <item>com.mediatek.wwtv.tvcenter</item>

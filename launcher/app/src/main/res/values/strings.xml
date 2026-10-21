@@ -9,6 +9,11 @@
     <string name="standby">Standby</string>
     <string name="not_connected">No device</string>
     <string name="current_input">Current input</string>
+    <string name="now_playing_idle">Play your music</string>
+    <string name="media_play">Play</string>
+    <string name="media_pause">Pause</string>
+    <string name="media_previous">Previous</string>
+    <string name="media_next">Next</string>
     <string name="live_tv">Live TV</string>
     <string name="no_inputs">No inputs found</string>
     <string name="good_morning">Good morning</string>

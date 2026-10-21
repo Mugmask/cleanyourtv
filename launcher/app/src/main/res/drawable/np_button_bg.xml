@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A now-playing button: a white disc when focused, like the top-bar pills. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="oval"><solid android:color="#F5FFFFFF" /></shape>
+    </item>
+    <item>
+        <shape android:shape="oval"><solid android:color="#1FFFFFFF" /></shape>
+    </item>
+</selector>

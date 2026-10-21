@@ -111,6 +111,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private static final long TIME_VALID_AFTER_MS = 1_735_689_600_000L;
     /** The Inputs dropdown's rows, shared with InputsPanelActivity. */
     private InputsMenu inputsMenu;
+    /** The now-playing card above the dock. */
+    private NowPlaying nowPlaying;
     /** Idle time on Home before ClockActivity; 0 is off (config.xml, home_idle_clock_minutes). */
     private long idleClockMs;
     private final Runnable showIdleClock = () -> startActivity(new Intent(this, ClockActivity.class));
@@ -339,6 +341,20 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (!ambientGlow) ambient.setVisibility(View.GONE);
         heroName = findViewById(R.id.heroName);
         hero = findViewById(R.id.hero);
+        nowPlaying = new NowPlaying(this, findViewById(R.id.nowPlaying), getString(R.string.music_app),
+                new NowPlaying.Host() {
+                    @Override public void focusTopBar() {
+                        (btnInputs.getVisibility() == View.VISIBLE ? btnInputs : firstTopButton()).requestFocus();
+                    }
+
+                    @Override public void focusDock() {
+                        focusTile(lastFocused % COLUMNS);
+                    }
+
+                    @Override public void onCardFocused() {
+                        hideGlass();
+                    }
+                });
         // The hero is now a group (name, and the cinematic lines): without this every fade of the default
         // shelf would render it through an offscreen buffer first, as the glow above notes.
         hero.forceHasOverlappingRendering(false);
@@ -552,8 +568,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) return true;
             if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                // Back to the dock tile Up came from, not wherever the focus finder lands.
-                focusTile(lastFocused % COLUMNS);
+                // The now-playing card first, then the dock tile Up came from, not wherever the focus finder lands.
+                if (!nowPlaying.focus()) focusTile(lastFocused % COLUMNS);
                 return true;
             }
             int firstButton = btnInputs.getVisibility() == View.VISIBLE ? R.id.btnInputs : firstTopButton().getId();
@@ -649,6 +665,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             registerReceiver(timeReceiver, timeFilter);
         }
         updateClockVisibility();
+        nowPlaying.start();
     }
 
     @Override
@@ -819,6 +836,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     protected void onStop() {
         super.onStop();
+        nowPlaying.stop();
         started = false;
         unregisterReceiver(packageReceiver);
         unregisterReceiver(timeReceiver);
@@ -1252,7 +1270,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 else grid.smoothScrollBy(0, dy);
             }
             showHero(position, scroll ? r.top - dy : r.top);
+            nowPlaying.showAbove(scroll ? r.top - dy : r.top);
         } else {
+            nowPlaying.hide();
             // Below the dock (or in a plain grid) the glow follows the tile without the big name; letting it
             // fade out left the grid on plain black.
             showGlowOnly(position);
@@ -1787,7 +1807,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                     rtlAppGrid, keyCode == KeyEvent.KEYCODE_DPAD_LEFT);
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            if (position < COLUMNS) return false;          // dock row: let focus move to the top bar
+            if (position < COLUMNS) return nowPlaying.focus();   // dock row: the card, else the top bar
             target = position - COLUMNS;
         } else {
             int lastRowStart = ((count - 1) / COLUMNS) * COLUMNS;
@@ -1806,6 +1826,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     @Override public void onLibraryFocused() {
         libraryFocusPending = false;
+        nowPlaying.hide();
         hideGlass();
         hideHero();
     }

@@ -103,6 +103,9 @@
         android:visibility="gone"
         android:importantForAccessibility="no" />
 
+    <!-- What is playing, above the dock (NowPlaying); positioned in code. -->
+    <include layout="@layout/now_playing" />
+
     <!-- Top shelf: the focused dock app's name, positioned above the dock in code. -->
     <LinearLayout
         android:id="@+id/hero"

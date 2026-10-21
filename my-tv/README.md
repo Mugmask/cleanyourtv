@@ -15,7 +15,12 @@ Cambios hechos el 2026-10-21 sobre el repo original
   - Tecla Input del control: en Home abre el menú del header; sobre un HDMI o una app abre un panel
     flotante a la derecha (`InputsPanelActivity`) con tilde en la entrada actual. El menú de entradas vive
     en `InputsMenu`, compartido por los dos. El selector de Google (`VIEW_INPUTS`) se fue con su Home.
-  - Protector de pantalla (`ClockDream`): la foto del tema con zoom y paneo lento, hora abajo a la derecha.
+  - Protector de pantalla (`ClockDream`): la foto del tema, hora abajo a la derecha y fecha "Mié 21 Oct".
+  - Tarjeta "reproduciendo" sobre el dock (`NowPlaying`): tapa, tema, artista y ⏮ ⏯ ⏭ de Spotify
+    (`music_app` en `config.xml`). Arriba desde el dock entra a la tarjeta; arriba otra vez, a la barra.
+    Esta TV es low-RAM y Android no deja habilitar `MediaListener` (lee todas las sesiones): la tarjeta se
+    conecta al `MediaBrowserService` de Spotify, que deja usar el control a cualquier app. Con Spotify
+    cerrado, Play lo abre; si estaba en pausa, Spotify se pone al frente y Home vuelve solo a los ~4 s.
 - **Tema** `theme/`: foto "Lofoten, Norway" (CC0, ver `theme/CREDITS.txt`), biblioteca de apps activada.
 - **Dock:** YouTube, Netflix, Max, Spotify (`launcher/app/src/main/res/values/config.xml`).
 
@@ -49,6 +54,10 @@ Reactiva lo que se desactivó, devuelve el Home y el protector de Google y desin
 `-KeepLauncher` hace todo menos desinstalarlo. Solo el tema: `tools\theme.ps1 -TvHost 192.168.100.5 -Reset`.
 
 ## Ojo
+
+- Cada reinstalación del launcher borra la elección de Home ("Result set changed, dropping preferred
+  activity": el menú de fábrica de Hisense cuenta como candidato pero no aparece en el selector). Después
+  de reinstalar, apretá Home y elegí **Clean Your TV → Siempre**.
 
 - Si al apretar Home aparece "¿qué app usar?", elegí **Clean Your TV → Siempre**. La otra opción,
   `com.hisense.uifac`, es el menú de fábrica de Hisense: no la abras.
