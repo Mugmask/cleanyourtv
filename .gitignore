@@ -17,3 +17,8 @@ work/
 *.aab
 launcher/hs_err_pid*.log
 launcher/replay_pid*.log
+
+# This fork: benchmark runs and the photo shortlist stay local
+bench-*/
+bench-*.txt
+my-tv/candidatas/

@@ -8,6 +8,7 @@
     <string name="connected">Conectado</string>
     <string name="standby">En espera</string>
     <string name="not_connected">Sin dispositivo</string>
+    <string name="current_input">Entrada actual</string>
     <string name="live_tv">TV en vivo</string>
     <string name="no_inputs">No se encontraron entradas</string>
     <string name="good_morning">Buenos días</string>

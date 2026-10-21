@@ -8,6 +8,7 @@
     <string name="connected">Connected</string>
     <string name="standby">Standby</string>
     <string name="not_connected">No device</string>
+    <string name="current_input">Current input</string>
     <string name="live_tv">Live TV</string>
     <string name="no_inputs">No inputs found</string>
     <string name="good_morning">Good morning</string>

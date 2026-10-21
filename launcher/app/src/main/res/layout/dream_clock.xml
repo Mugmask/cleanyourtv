@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Screensaver (ClockDream): clock and date that drift around a black screen over an ambient glow. -->
+<!-- Screensaver (ClockDream): the theme's wallpaper, slowly zooming and panning, with a bold clock and the date
+     in the bottom right corner. Without a wallpaper, black under an ambient glow. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,10 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/dreamPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/dreamShade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dream_shade"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/dreamContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:orientation="vertical">
 
         <LinearLayout
@@ -27,10 +44,10 @@
                 android:layout_height="wrap_content"
                 android:format12Hour="h:mm"
                 android:format24Hour="HH:mm"
-                android:textColor="#E6FFFFFF"
-                android:textSize="120sp"
-                android:fontFamily="@font/outfit_extralight"
-                android:letterSpacing="-0.04"
+                android:textColor="#F2FFFFFF"
+                android:textSize="110sp"
+                android:fontFamily="@font/inter_semibold"
+                android:letterSpacing="-0.03"
                 android:includeFontPadding="false" />
 
             <TextClock
@@ -41,7 +58,7 @@
                 android:format24Hour=""
                 android:textColor="#99FFFFFF"
                 android:textSize="22sp"
-                android:fontFamily="@font/outfit_medium"
+                android:fontFamily="@font/inter_medium"
                 android:letterSpacing="0.08"
                 android:textAllCaps="true" />
         </LinearLayout>
@@ -49,14 +66,11 @@
         <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:format12Hour="@string/date_format"
             android:format24Hour="@string/date_format"
-            android:textColor="#8CFFFFFF"
-            android:textSize="18sp"
-            android:fontFamily="@font/outfit_regular"
-            android:letterSpacing="0.14"
-            android:textAllCaps="true" />
+            android:textColor="#B3FFFFFF"
+            android:textSize="24sp"
+            android:fontFamily="@font/inter_medium" />
     </LinearLayout>
 </FrameLayout>

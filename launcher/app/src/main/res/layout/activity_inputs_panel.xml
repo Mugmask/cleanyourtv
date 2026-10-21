@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- InputsPanelActivity: the Inputs menu as a floating sidebar card at the right edge, over the playing input. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrim"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/panel"
+        android:layout_width="wrap_content"
+        android:minWidth="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="48dp"
+        android:orientation="vertical"
+        android:background="@drawable/glass_panel"
+        android:padding="10dp"
+        android:elevation="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="10dp"
+            android:text="@string/inputs"
+            android:textColor="#B3FFFFFF"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter_medium"
+            android:letterSpacing="0.06" />
+
+        <LinearLayout
+            android:id="@+id/rows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </LinearLayout>
+</FrameLayout>

@@ -55,8 +55,16 @@ public class InputKeyService extends AccessibilityService {
                 RemoteKeys.launch(this, app);
             } else {
                 try {
+                    if (MainActivity.onScreen) {
+                        // On Home: the dropdown under the Inputs pill, not a second menu floating over it.
+                        startActivity(new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_SHOW_INPUTS)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        return true;
+                    }
                     startActivity(new Intent(ACTION_VIEW_INPUTS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                } catch (ActivityNotFoundException ignored) {
+                } catch (ActivityNotFoundException e) {
+                    // The panel lived in the disabled stock launcher (Hisense A4, Android 9): float our own.
+                    startActivity(new Intent(this, InputsPanelActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
             }
         }

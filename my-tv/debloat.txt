@@ -1,0 +1,8 @@
+# Mi Hisense HiSmartTV A4 (xiaoyushan), Android 9. Basado en examples/hisense-hismarttv-a4.
+# Ya venian desactivados antes de esto (ver backup/*/disabled.txt): telemetria, recomendaciones,
+# store mode, demo, Asistente (katniss/pumpkin), leanbacklauncher, etc.
+# Se dejan por eleccion: Netflix, Prime Video, OTA (com.hisense.tv.ota, com.hisense.remoteupgrade),
+# protector de Hisense (com.hisense.myapplication), Chromecast, Miracast.
+com.mstar.android.tv.disclaimercustomization   # pantalla de aviso de tienda
+android.autoinstalls.config.hisense.xiaoyushan # instalaciones silenciosas de precargas
+com.jamdeo.tv.mediacenter                      # reproductor USB de Hisense
